@@ -1,0 +1,1 @@
+INSERT INTO "app_settings_items" VALUES(5,'notification sounds','1');

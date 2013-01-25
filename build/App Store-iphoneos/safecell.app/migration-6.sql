@@ -1,0 +1,1 @@
+ALTER TABLE "main"."rules" ADD COLUMN "zone_name" VARCHAR DEFAULT '';

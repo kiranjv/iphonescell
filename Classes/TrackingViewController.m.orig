@@ -1,0 +1,553 @@
+//
+//  TrackingViewController.m
+//  safecell
+//
+//  Created by shail on 06/05/10.
+//  Copyright 2010 ChaiONE. All rights reserved.
+//
+
+#import "TrackingViewController.h"
+#import "AppDelegate.h"
+#import "SCWaypoint.h"
+#import "SCTripJourney.h"
+#import "WayPointsFileHelper.h"
+#import "WayPointsStore.h"
+#import "InterruptionsHandler.h"
+#import "AddTripViewController.h"
+#import "WayPointsReader.h"
+#import "AddTripViewController.h"
+#import "NavBarHelper.h"
+#import "UIUtils.h"
+
+@implementation TrackingViewController
+
+@synthesize delegate;
+
+@synthesize pauseStartTrackingButton;
+@synthesize trackingStatusMessageImageView;
+@synthesize locationManager;
+
+@synthesize phoneStatusImageView;
+@synthesize smsStatusImageView;
+@synthesize schoolStatusImageView;
+
+@synthesize phoneStatusLabel;
+@synthesize smsStatusLabel;
+@synthesize schoolStatusLabel;
+
+static const NSInteger kStopTripNoButton = 0;
+static const NSInteger kStopTripYesButton = 1;
+
+static const NSInteger kWayPointsStoreSize = 5;
+
+static NSString *RULE_STATUS_ACTIVE_COLOR = @"D20300";
+static NSString *RULE_STATUS_INACTIVE_COLOR = @"A4A4A4";
+
+-(void) showHUD {
+	if (progressHUD == nil) {
+		progressHUD = [[ProgressHUD alloc] init];
+	}
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[progressHUD showHUDWithLable:@"Analyzing Trip…" inView:appDelegate.window animated: YES];
+}
+
+-(void) hideHUD {
+	[progressHUD hideHUD];
+}
+
+-(void) createRuleStatusImages {
+	phoneActive = [[UIImage imageNamed:@"phone-active.png"] retain];
+	phoneInactive = [[UIImage imageNamed:@"phone-inactive.png"] retain];
+	
+	smsActive = [[UIImage imageNamed:@"sms-active.png"] retain];
+	smsInactive = [[UIImage imageNamed:@"sms-inactive.png"] retain];
+	
+	schoolActive = [[UIImage imageNamed:@"school-active.png"] retain];
+	schoolInactive = [[UIImage imageNamed:@"school-inactive.png"] retain];
+}
+
+-(void) showAddTripViewController {
+	AddTripViewController * addTripViewController = [[AddTripViewController alloc] initWithStyle:UITableViewStylePlain];
+	addTripViewController.delegate = self;
+	UINavigationController *navController = [[UINavigationController alloc] 
+											 initWithRootViewController:addTripViewController];
+	
+	//Hack to get the right tint color since DecorateNavBar(self); in AddTripViewController does nothing.
+	navController.navigationBar.tintColor = [UIColor colorWithRed:.35 green:.43 blue:.58 alpha:1];
+	
+	[self presentModalViewController:navController animated:YES];
+	[addTripViewController release];
+	[navController release];
+}
+
+-(void) dismissSelf {
+	[self.parentViewController dismissModalViewControllerAnimated:YES];
+}
+
+-(void) createImageAssets {
+	trackingOnMessageImage = [[UIImage imageNamed:@"tracking_on_message.png"] retain];
+	trackingPausedMessageImage = [[UIImage imageNamed:@"tracking_paused_message.png"] retain];
+	
+	pauseButtonImage = [[UIImage imageNamed:@"pause_button.png"] retain];
+	startButtonImage = [[UIImage imageNamed:@"start_button.png"] retain];
+	
+	[self createRuleStatusImages];
+}
+
+- (void)viewDidLoad {	
+
+	[self createImageAssets];
+	
+	[self configureLocationManager];
+	[self configureWaypointsHelper];
+	
+	wayPointsStore = [[WayPointsStore alloc] initWithCapacity:kWayPointsStoreSize];
+		
+	rulesDownloadManager = [[RulesDownloadManager alloc] init];
+	rulesDownloadManager.trackingViewController = self;
+	
+	schoolsDownloadManager = [[SchoolsDownloadManager alloc] init];
+	schoolsDownloadManager.trackingViewController = self;
+	
+	[self startTracking];
+	
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate.interruptionsHandler startTracking];
+	
+#ifdef DEBUG 
+	[self addDebugUI];
+#endif
+}
+
+
+-(void) configureWaypointsHelper {
+	if ([WayPointsFileHelper wayPointsFileExists]) {
+		wayPointsFileHelper = [[WayPointsFileHelper alloc] initWithNewFile:NO];		
+	} else {
+		wayPointsFileHelper = [[WayPointsFileHelper alloc] initWithNewFile:YES];
+	}
+}
+
+
+- (void) configureLocationManager {
+#ifdef USE_RECORDED_WAYPOINTS
+	self.locationManager = [[[FakeLocationManager alloc] init] autorelease];
+#else
+	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
+	self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+	self.locationManager.distanceFilter = 0;
+#endif
+	self.locationManager.delegate = self;	
+}
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+}
+
+- (void)viewDidUnload {	
+	[trackingOnMessageImage release];
+	trackingOnMessageImage = nil;
+	
+	[trackingPausedMessageImage release];
+	trackingPausedMessageImage = nil;
+	
+	[pauseButtonImage release];
+	pauseButtonImage = nil;
+	
+	[startButtonImage release];
+	startButtonImage = nil;
+	
+	self.delegate = nil;
+	
+	self.ruleMessage = nil;
+	
+	self.pauseStartTrackingButton = nil;
+	self.trackingStatusMessageImageView = nil;
+	
+	self.phoneStatusImageView = nil;
+	self.smsStatusImageView = nil;
+	self.schoolStatusImageView = nil;
+	
+	self.phoneStatusLabel = nil;
+	self.smsStatusLabel = nil;
+	self.schoolStatusLabel = nil;
+}
+
+-(void) setSchoolZoneWarning {
+	self.ruleMessage = @"You are currently near a school zone. Please watch posted speeds and rules.";
+}
+
+-(void) clearSchoolZoneWarning {
+	self.ruleMessage = @"";
+}
+
+- (void)dealloc {	
+	[trackingOnMessageImage release];
+	[trackingPausedMessageImage release];
+	
+	[pauseButtonImage release];
+	[startButtonImage release];
+	
+	[delegate release];
+	
+	[pauseStartTrackingButton release];
+	[trackingStatusMessageImageView release];
+	
+	[wayPointsFileHelper release];
+	[wayPointsStore release];
+	
+	[rulesDownloadManager release];
+	[schoolsDownloadManager release];
+	
+	[emergencyNumbersHelper release];
+	
+	[phoneStatusImageView release];
+	[smsStatusImageView release];
+	[schoolStatusImageView release];
+	
+	[phoneStatusLabel release];
+	[smsStatusLabel release];
+	[schoolStatusLabel release];
+	
+	[phoneActive release];
+	[phoneInactive release];
+	
+	[smsActive release];
+	[smsInactive release];
+	
+	[schoolActive release];
+	[schoolInactive release];
+	
+#ifdef DEBUG	
+	[debugController release];
+	[debugConsole release];
+	[emailWaypointsFileSwitch release];	
+	[raceToEndButton release];
+#endif
+	
+    [super dealloc];
+}
+
+-(void) filterWaypoints {
+	NSString *wayPointsFilePath = [WayPointsFileHelper wayPointsFilePath];
+	NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:wayPointsFilePath];
+	WayPointsReader *reader = [[WayPointsReader alloc] initWithFileHandle:fileHandle];
+	WaypointFilter *waypointFilter = [[WaypointFilter alloc] init];
+	NSMutableArray *waypointsArray = [[NSMutableArray alloc] initWithCapacity:100];
+	
+	SCWaypoint *waypoint = nil;
+	
+	while ((waypoint = [reader readNextWayPoint]) != nil) {
+		waypoint = [waypointFilter filterWaypoint:waypoint];
+		
+		if (waypoint != nil) {
+			[waypointsArray addObject:waypoint];
+		}
+	}
+	
+	[waypointFilter release];
+	[reader release];
+	
+	WayPointsFileHelper *fileHelper = [[WayPointsFileHelper alloc] initWithNewFile:YES];
+	
+	for (SCWaypoint *tempWaypoint in waypointsArray) {
+		[fileHelper writeWayPoint:tempWaypoint];
+	}
+	
+	[fileHelper release];	
+	[waypointsArray release];	
+	[self hideHUD];
+	
+	[self showAddTripViewController];
+}
+
+-(void) startTracking {
+	tracking = YES;
+	[locationManager startUpdatingLocation];
+	[self.pauseStartTrackingButton setImage:pauseButtonImage forState:UIControlStateNormal];
+	self.trackingStatusMessageImageView.image = trackingOnMessageImage;
+}
+
+-(void) pauseTracking {
+	tracking = NO;
+	[locationManager stopUpdatingLocation];
+	[self.pauseStartTrackingButton setImage:startButtonImage forState:UIControlStateNormal];
+	self.trackingStatusMessageImageView.image = trackingPausedMessageImage;
+}
+
+-(void) stopTracking {	
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+	if (paused) {
+		tracking = YES;
+		paused = NO;
+		[appDelegate.interruptionsHandler trackingResumed];
+	}
+	
+	if (tracking) {
+		[self showHUD];
+		tracking = NO;
+		[appDelegate.interruptionsHandler stopTracking];
+		[self performSelector:@selector(filterWaypoints) withObject:nil afterDelay:0.5];
+	} else {
+		[self showAddTripViewController];
+	}
+}
+
+-(NSString *) ruleMessage {
+	return ruleMessage;
+}
+
+-(void) setRuleMessage:(NSString *) newMessage {
+	[ruleMessage release];
+	ruleMessage = [newMessage retain];
+}
+
+-(EmergencyNumbersHelper *) emergencyNumbersHelper {
+	if (emergencyNumbersHelper == nil) {
+		emergencyNumbersHelper = [[[EmergencyNumbersHelper alloc] init] retain];
+	}
+	
+	return emergencyNumbersHelper;
+}
+
+-(void) updatePhoneStatusToActive {
+	self.phoneStatusLabel.textColor = [UIUtils colorFromHexColor:RULE_STATUS_ACTIVE_COLOR];
+	self.phoneStatusImageView.image = phoneActive;
+}
+
+-(void) updatePhoneStatusToInactive {
+	self.phoneStatusLabel.textColor = [UIUtils colorFromHexColor:RULE_STATUS_INACTIVE_COLOR];
+	self.phoneStatusImageView.image = phoneInactive;
+}
+
+-(void) updateSMSStatusToActive {
+	self.smsStatusLabel.textColor = [UIUtils colorFromHexColor:RULE_STATUS_ACTIVE_COLOR];
+	self.smsStatusImageView.image= smsActive;
+}
+
+-(void) updateSMSStatusToInactive {
+	self.smsStatusLabel.textColor = [UIUtils colorFromHexColor:RULE_STATUS_INACTIVE_COLOR];
+	self.smsStatusImageView.image= smsInactive;
+}
+
+-(void) updateSchoolStatusToActive {
+	self.schoolStatusLabel.textColor = [UIUtils colorFromHexColor:RULE_STATUS_ACTIVE_COLOR];
+	self.schoolStatusImageView.image= schoolActive;
+}
+	
+-(void) updateSchoolStatusToInactive {
+	self.schoolStatusLabel.textColor = [UIUtils colorFromHexColor:RULE_STATUS_INACTIVE_COLOR];
+	self.schoolStatusImageView.image= schoolInactive;
+}
+
+
+#pragma mark -
+#pragma mark Actions
+
+-(IBAction) stopButtonTapped: (id) sender {	
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stop Tracking?" message:@"Do you really want to stop this trip?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+	[alert show];
+	[alert release];	
+}
+
+-(IBAction) pauseStartTrackingButtonTapped: (id) sender {
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if(tracking) {
+		[self pauseTracking];	
+		paused = YES;
+		[appDelegate.interruptionsHandler trackingPaused];
+	} else {
+		[self startTracking];
+		paused = NO;
+		[appDelegate.interruptionsHandler trackingResumed];
+	}
+}
+
+-(IBAction) placeEmergencyCallButtonTapped: (id) sender {	
+	[[self emergencyNumbersHelper] showEmergencyNumbers:self];
+}
+
+
+#pragma mark -
+#pragma mark CLLocationManagerDelegate Methods
+
+- (void)locationManager:(CLLocationManager *)manager 
+	didUpdateToLocation:(CLLocation *)newLocation 
+           fromLocation:(CLLocation *)oldLocation {
+
+#ifndef USE_RECORDED_WAYPOINTS
+	//Negative horizontal accuracy means the location update is invalid.
+	if (newLocation.horizontalAccuracy < 0) {
+		return;
+	}
+	
+<<<<<<< Updated upstream
+	//Make sure that the waypoint returned is reasonably accurate.
+	//if (newLocation.horizontalAccuracy > 1) {
+=======
+//	//Make sure that the waypoint returned is reasonably accurate.
+//	if (newLocation.horizontalAccuracy > 1) {
+>>>>>>> Stashed changes
+//		return;
+//	}
+#endif
+	
+	SCWaypoint *waypoint = [[SCWaypoint alloc] initWithCLLocation:newLocation journeyId:kJourneyIdNotPersisted];
+	
+	[wayPointsStore pushWayPoint:waypoint];
+	[wayPointsFileHelper writeWayPoint:waypoint];
+	
+	[rulesDownloadManager locationChangedtoWaypoint:waypoint];
+	[schoolsDownloadManager locationChangedtoWaypoint:waypoint];
+	
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	appDelegate.interruptionsHandler.previousWaypoint = waypoint;
+	
+#ifdef DEBUG
+	NSLog(@"wayPoint: %@", [waypoint JSONRepresentation]);
+	[debugController logWaypoint:waypoint];
+	//[self logToDebugConsole:[wayPoint JSONRepresentation]];
+#endif
+	
+	[waypoint release];
+}
+
+
+#pragma mark -
+#pragma mark FakeLocationManagerDelegate
+-(void) reachedToEndofRecordedWayPointsFile {
+	[self stopButtonTapped:nil];
+}
+
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if(buttonIndex == kStopTripYesButton) {
+		
+		[locationManager stopUpdatingLocation];	
+		[wayPointsFileHelper closeWayPointFile];
+		[wayPointsFileHelper archiveWayPointsFile];		
+	
+#ifdef DEBUG
+	
+		if([MFMailComposeViewController canSendMail]) {
+			if(emailWaypointsFileSwitch.on) {
+				MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
+				controller.mailComposeDelegate = self;
+				[controller setSubject:@"Safecell App: WayPoints File"];
+				[controller setMessageBody:@"Find the file attched." isHTML:NO];
+				
+				NSData *wayPointsZipData = [wayPointsFileHelper wayPointsZipFileData];
+				
+				[controller addAttachmentData:wayPointsZipData mimeType:@"application/zip" fileName:kWayPointZipFileName];
+				
+				[self presentModalViewController:controller animated:YES];
+				[controller release];	
+			} else {
+				[self stopTracking];
+				return;
+			}
+		} else {
+			[self stopTracking];
+			return;
+		}
+#elif
+		[self stopTracking];
+#endif	
+	}
+}
+
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller 
+		  didFinishWithResult:(MFMailComposeResult)result 
+						error:(NSError*)error {
+	[self dismissModalViewControllerAnimated:NO];
+	[self stopTracking];
+}
+
+
+#pragma mark -
+#pragma mark AddTripViewControllerDelegate
+
+-(void) tripSavingFinished {
+	[self performSelector:@selector(dismissSelf) withObject:nil afterDelay:0.5];
+}
+
+#pragma mark -
+#pragma mark Debug Mode Methods
+
+#ifdef DEBUG
+
+-(void) addEmailLabel {
+	UILabel * emailLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 415, 140, 25)];
+	emailLabel.text = @"Email WayPoints";
+	emailLabel.backgroundColor = [UIColor clearColor];
+	[debugController.view addSubview:emailLabel];
+	[emailLabel release];
+}
+
+-(void) addEmailWaypointsFileSwitch {
+	emailWaypointsFileSwitch = [[UISwitch alloc]  initWithFrame:CGRectMake(150, 415, 200, 30)];
+	emailWaypointsFileSwitch.on = NO;
+	[debugController.view addSubview:emailWaypointsFileSwitch];
+}
+
+-(void) addShowDebugButton {
+	UIButton *debugButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+	debugButton.frame = CGRectMake(300, 10, 15, 15);
+	[debugButton addTarget:self action:@selector(showDebug) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:debugButton];
+}
+
+-(void)showDebug {
+	[self.view addSubview:debugController.view];
+}
+
+-(void) addRaceToEndButton {
+	
+	raceToEndButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	raceToEndButton.frame = CGRectMake(5, 20, 100, 38);
+	[raceToEndButton setTitle:@"Race to End" forState:UIControlStateNormal];
+	[raceToEndButton addTarget:self action:@selector(raceToEndTapped) forControlEvents:UIControlEventTouchUpInside];
+
+	[debugController.view addSubview:raceToEndButton];
+}
+
+-(void) addDebugUI {		
+	
+	debugController = [[DebugTrackingInformationController alloc] initWithNibName:@"DebugTrackingInformationController" bundle:nil];
+	
+	int count = [wayPointsFileHelper countWaypointsInFile];	
+	
+	debugController.numWaypoints = count;
+	
+	[self addShowDebugButton];
+	[self addEmailLabel];
+	[self addEmailWaypointsFileSwitch];		
+	
+#ifdef USE_RECORDED_WAYPOINTS
+	[self addRaceToEndButton];
+#endif
+	
+	
+}
+
+-(void)raceToEndTapped {
+	raceToEndButton.enabled = NO;
+	FakeLocationManager * manager = (FakeLocationManager *) locationManager;
+	manager.raceToEnd = YES;
+}
+
+#endif
+
+
+@end

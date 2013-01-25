@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>baseURL</key>
+<<<<<<< HEAD
+	<string>http://0.0.0.0:3000/api/1</string>
+=======
+	<string>http://safecell-test.heroku.com/api/1</string>
+>>>>>>> 3c9d405bf3ce3641e0d548aad0891a7a0a2723c0
+</dict>
+</plist>

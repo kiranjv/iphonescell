@@ -1,0 +1,242 @@
+//
+//  SubmitNewTripJourney.m
+//  safecell
+//
+//  Created by shail on 13/05/10.
+//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//
+
+#import "SubmitNewTripJourney.h"
+#import "ASIFormDataRequest.h"
+#import "AppDelegate.h"
+#import "SCTripJourney.h"
+#import "SCProfile.h"
+#import "FileUtils.h"
+
+@implementation SubmitNewTripJourney
+
+@synthesize tripJourney;
+@synthesize netWorkDelegate;
+
+
+-(void) configureFailureTracker {
+	if (failureTracker) {
+		[failureTracker release];
+		failureTracker = nil;
+	}
+	failureTracker = [[NetworkCallFailureTracker alloc] initWithRetriesAllowed:3];
+	[failureTracker trackResponseCodesWithTotalCount:1, 0];
+	[failureTracker addTarget:self startRequestSelector:@selector(startAsynchronous) requestFinallyFailedSelector:@selector(requestFailedAfterRetries:)];
+}
+
+- (id) init {
+	self = [super init];
+	if (self != nil) {
+		[self createContents];
+		
+		uploadedDataSize = 0;
+		receivedDataSize = 0;
+		
+		receivedResponse = NO;
+	}
+	return self;
+}
+
+-(void) createContents {	
+	self.view.backgroundColor = [UIColor clearColor];
+	
+	[self addTranslucentView];
+	[self addImageView];
+	[self addTitleLabel];
+	[self addProgressView];
+	// [self addCancelButton];
+}
+
+-(void) addTranslucentView {
+	UIView *translucentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 460)];
+	translucentView.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
+	[self.view addSubview:translucentView];
+	[translucentView release];
+}
+
+-(void) addImageView {
+	UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 360, 320, 100)];
+	imageView.backgroundColor = [UIColor whiteColor];
+	[self.view addSubview:imageView];
+	[imageView release];
+}
+
+-(void) addTitleLabel {
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 380, 320, 30)];
+	label.textAlignment = UITextAlignmentCenter;
+	label.font = [UIFont boldSystemFontOfSize:14];
+	label.text = @"Saving your trip...";	
+	[self.view addSubview:label];
+	[label release];
+}
+
+-(void) addProgressView {
+	progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+	[progressView setFrame:CGRectMake(10, 410, 300, 20)];	
+	[self.view addSubview:progressView];
+}
+
+-(void) addCancelButton {
+	UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	cancelButton.frame = CGRectMake(110, 405, 100, 40);
+	[cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+	[self.view addSubview:cancelButton];
+	[cancelButton addTarget:self action:@selector(cancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void) startAsynchronous {
+	
+	NSURL *url = [NSURL URLWithString:[self buildURL]];
+	ASIFormDataRequest *formDataRequest = [ASIFormDataRequest requestWithURL:url];
+	
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[formDataRequest addRequestHeader:@"x-api-key" value:appDelegate.currentProfile.apiKey];
+	[formDataRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+	[formDataRequest setTimeOutSeconds:60];
+	//formDataRequest.shouldCompressRequestBody = YES;
+	
+	NSLog(@"url: %@", url);
+	NSLog(@"x-api-key: %@", appDelegate.currentProfile.apiKey);
+	NSLog(@"Content-Type: application/json");
+	// NSLog(@"json = %@", [tripJourney JSONRepresentation]);
+	NSLog(@"waypoint count: %d", [tripJourney.waypoints count]);
+	NSLog(@"Request TimeOut: %f", formDataRequest.timeOutSeconds);
+	
+	NSData *tripData = [[tripJourney JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+<<<<<<< HEAD
+	int uploadSize = [tripData length];
+	NSLog(@"upload size: %.2f KB", (uploadSize / 1024.0f));
+	
+	[formDataRequest appendPostData:tripData];
+	formDataRequest.showAccurateProgress = YES;
+	[formDataRequest setUploadProgressDelegate:progressView];
+	//[formDataRequest setUploadProgressDelegate:self];
+=======
+	uploadSize = [tripData length];
+	NSLog(@"uplaod size: %d", (uploadSize / 1024));
+	
+	[formDataRequest appendPostData:tripData];
+	//formDataRequest.showAccurateProgress = YES;
+	[formDataRequest setUploadProgressDelegate:self];
+	[formDataRequest setDownloadProgressDelegate:self];
+>>>>>>> 61235db95590e7e90a4ee7f856ffbb93c630e47f
+	[formDataRequest setDelegate:self];
+	[formDataRequest startAsynchronous];	
+}
+
+-(void)request:(ASIHTTPRequest *)request didSendBytes:(long long)bytes {
+	NSLog(@"Sent %d bytes....", bytes);
+}
+
+-(NSString *) buildURL {
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];	
+	NSString * url = [NSString stringWithFormat:@"%@/trips?account_id=%d&profile_id=%d", 
+					  [Config baseURL], appDelegate.currentProfile.accountId, appDelegate.currentProfile.profileId];
+	
+		
+	return url;
+}
+
+- (void) dealloc {	
+	[failureTracker release];
+	[progressView release];	
+	[tripJourney release];
+	[super dealloc];
+}
+
+-(void) showModalAnimationDidStop {
+	// [self startAsynchronous];
+	[self configureFailureTracker];
+	[failureTracker start];
+}
+
+-(void) requestFailedAfterRetries: (ASIHTTPRequest *) request {
+	if(netWorkDelegate && [netWorkDelegate respondsToSelector:@selector(networkOperationFailedWithStatusCode:)]) {
+		[netWorkDelegate networkOperationFailedWithStatusCode:[request responseStatusCode]];
+	}
+}
+
+
+#pragma mark -
+#pragma mark Upload Progress Delegate
+
+- (void)request:(ASIHTTPRequest *)request didReceiveBytes:(long long)bytes {
+	if (!receivedResponse) {
+		progressView.progress = 0.75;
+		receivedResponse = YES;
+	}
+	
+	int responseLength = request.contentLength;
+	receivedDataSize += bytes;
+	
+	float progress = ((float)receivedDataSize / responseLength) / 4;
+	
+	progressView.progress = 0.75 + progress;
+	
+	NSLog(@"d progress: %f", progress);
+	NSLog(@"d progressView.progress: %f", progressView.progress);
+}
+
+- (void)request:(ASIHTTPRequest *)request didSendBytes:(long long)bytes {
+	
+	if (receivedResponse) {
+		return;
+	}
+	
+	if (bytes < 0) {
+		uploadedDataSize = 0;
+		progressView.progress = 0.0;
+	}
+	
+	uploadedDataSize += bytes;
+	
+	float progress = ((float)uploadedDataSize / uploadSize) / 1.33;
+	progressView.progress = progress;
+	
+	NSLog(@"u progress: %f", progress);
+	NSLog(@"u progressView.progress: %f", progressView.progress);
+}
+
+#pragma mark -
+#pragma mark ASIHTTPRequestDelegate
+
+- (void)requestFinished:(ASIHTTPRequest *)request {	
+	
+	if(progressView.progress < 1.0) {
+		NSLog(@"Did set progress manually.");
+		progressView.progress = 1.0;
+	}
+	
+	NSString *response = [request responseString];	
+	NSLog(@"Response: %@", response);
+	
+	/*
+	response = [FileUtils textFromBundleFile:@"CreateTrip.json"];	
+	[netWorkDelegate networkOperationSucceeded:response];
+	*/
+	
+	
+	if(request.responseStatusCode != 200) {
+		[self requestFailed:request];
+	} else {
+		if(netWorkDelegate && [netWorkDelegate respondsToSelector:@selector(networkOperationSucceeded:)]) {
+			[netWorkDelegate networkOperationSucceeded:response];
+		}
+	}
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+	NSLog(@"Response Code: %d", request.responseStatusCode);
+	NSError *error = [request error];
+	if (error) {
+		NSLog(@"Failed: %@", [error localizedDescription]);
+	}
+	[failureTracker failedForOnce:request];
+}
+
+@end

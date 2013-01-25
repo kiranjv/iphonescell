@@ -1,0 +1,18 @@
+/*
+ *  Debug.h
+ *  safecell
+ *
+ *  Created by shail on 07/05/10.
+ *  Copyright 2010 ChaiONE. All rights reserved.
+ *
+ */
+
+
+#define DEBUG
+<<<<<<< HEAD
+#define USE_RECORDED_WAYPOINTS 
+=======
+// #define USE_RECORDED_WAYPOINTS 
+>>>>>>> 3c9d405bf3ce3641e0d548aad0891a7a0a2723c0
+#define ALLOW_TRIP_EMAIL 0
+#define ALLOW_DELETE_TRIP 0

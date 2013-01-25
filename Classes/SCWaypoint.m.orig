@@ -1,0 +1,139 @@
+//
+//  WayPoint.m
+//  safecell
+//
+//  Created by shail on 07/05/10.
+//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//
+
+#import "SCWaypoint.h"
+#import "LocationUtils.h"
+
+#define kTimeStampDateFormat @"yyyy-MM-dd HH:mm:ss zzz"
+
+@implementation SCWaypoint
+
+@synthesize tripId;
+@synthesize timeStamp;
+@synthesize latitude;
+@synthesize longitude;
+@synthesize estimatedSpeed;
+
+-(SCWaypoint *) initWithCLLocation: (CLLocation *) location tripId: (int) journey {
+	self = [super init];
+	if (self != nil) {
+		self.tripId = journey;
+		self.latitude = location.coordinate.latitude;
+		self.longitude = location.coordinate.longitude;
+		self.timeStamp = location.timestamp;
+		self.estimatedSpeed = 0;
+	}
+	return self;	
+}
+
++(SCWaypoint *) wayPointWithDictionary: (NSDictionary *) dict {
+	SCWaypoint *wayPoint = [[[SCWaypoint alloc] init] autorelease];
+	wayPoint.tripId = [[dict objectForKey:@"tripId"] intValue];	
+	wayPoint.latitude = [[dict objectForKey:@"latitude"] doubleValue];	
+	wayPoint.longitude = [[dict objectForKey:@"longitude"] doubleValue];	
+	wayPoint.estimatedSpeed = [[dict objectForKey:@"estimatedSpeed"] floatValue];
+	
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:kTimeStampDateFormat];
+	wayPoint.timeStamp = [dateFormatter dateFromString:[dict objectForKey:@"timeStamp"]];
+	
+	return wayPoint;
+}
+
++(SCWaypoint *) wayPointWithJSON: (NSString *) JSONRepresentation {
+	SBJSON *jsonHelper = [[SBJSON alloc] init];
+	id obj = [jsonHelper objectWithString:JSONRepresentation];
+	[jsonHelper release];
+	
+	if([obj isKindOfClass:[NSDictionary class]]) {
+		NSDictionary * dict = (NSDictionary *) obj;
+		return [SCWaypoint wayPointWithDictionary:dict];
+	} else {
+		return nil;
+	}
+}
+
+- (void) dealloc
+{
+	[timeStamp release];
+	[super dealloc];
+}
+
++(double) distanceFromWayPoint:(SCWaypoint *) from toWayPoint:(SCWaypoint *) to {
+	
+	CLLocationCoordinate2D fromLocation, toLocation;
+	
+	fromLocation.latitude = from.latitude;
+	fromLocation.longitude = from.longitude;
+	
+	toLocation.latitude = to.latitude;
+	toLocation.longitude = to.longitude;
+	
+	double distance = [LocationUtils distanceFrom:fromLocation to:toLocation];
+	return distance;
+}
+
+-(NSString *) JSONRepresentation {
+	SBJSON *jsonHelper = [[SBJSON alloc] init];
+	jsonHelper.humanReadable = NO;
+	NSString *jsonStr = [jsonHelper stringWithObject:self];
+	[jsonHelper release];
+	
+	return jsonStr;
+}
+
+// Overridden method from NSObject(SBProxyForJson) to support JSON formatting for custom class
+- (id)proxyForJson {
+	
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:kTimeStampDateFormat];
+	
+	NSString *timeStampStr = nil;
+	
+	if(self.timeStamp) {
+		timeStampStr = [dateFormatter stringFromDate:self.timeStamp];
+	}
+	
+	[dateFormatter release];
+	
+    return	[NSDictionary dictionaryWithObjectsAndKeys:
+			[NSNumber numberWithInt:tripId], @"tripId",
+			[NSNumber numberWithDouble:self.latitude], @"latitude",
+			[NSNumber numberWithDouble:self.longitude], @"longitude",
+			[NSNumber numberWithFloat:self.estimatedSpeed], @"estimatedSpeed",
+			timeStampStr, @"timeStamp",
+			nil];
+}
+
+
+<<<<<<< HEAD
+-(CLLocation *) toCLLocation {
+	
+	CLLocationCoordinate2D locationCordinates;
+	locationCordinates.latitude = self.latitude;
+	locationCordinates.longitude = self.longitude;
+		
+	CLLocation * location = [[[CLLocation alloc] initWithCoordinate:locationCordinates 
+														   altitude:0 
+												 horizontalAccuracy:kCLLocationAccuracyBest 
+												   verticalAccuracy:kCLLocationAccuracyBest 
+														  timestamp:self.timeStamp] autorelease];
+	return location;	
+}
+
+=======
+#pragma mark -
+#pragma mark Map Annotations
+
+-(CLLocationCoordinate2D)coordinate {
+	CLLocation *loc = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
+	return [loc coordinate];
+}
+>>>>>>> Added waypoint map, shows the waypoints on a map with pins.  Centers the map on the set of waypoints given.  Working on drawing a line between each route point, but that part is dependent on getting the test waypoint data in the system.
+
+@end

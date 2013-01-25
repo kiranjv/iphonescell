@@ -1,0 +1,136 @@
+//
+//  safecellAppDelegate.m
+//  safecell
+//
+//  Created by Ben Scheirman on 3/16/10.
+//  Copyright ChaiONE 2010. All rights reserved.
+//
+
+#import "AppDelegate.h"
+#import "DatabaseMigrator.h"
+#import "AbstractRepository.h"
+#import "ProfileRepository.h"
+#import "ResourceManager.h"
+
+#define CURRENT_SCHEMA_VERSION 3
+
+@implementation AppDelegate
+
+@synthesize window;
+@synthesize viewController;
+
+<<<<<<< HEAD
+=======
+@synthesize recordedWayPointsFile;
+>>>>>>> Added Interruptions Logic
+@synthesize rootController;
+
+@synthesize currentProfile;
+@synthesize interruptionsHandler;
+
+- (void)dealloc {
+	[interruptionsHandler release];
+	[locationStripeController release];
+	[currentProfile release];
+    [viewController release];
+	[rootController release];
+    [window release];
+    [super dealloc];
+}
+
+-(void) copyResourcesToDocumentsDir {
+	ResourceManager *resourceManager = [[ResourceManager alloc] init];
+	[resourceManager copyResourcesToDocumentsDirectory];	
+	[resourceManager release];
+}
+
+-(void) initializeDatabase {
+	DatabaseMigrator *dbMigrator = [[DatabaseMigrator alloc] initWithDatabaseFile:[AbstractRepository databaseFilename]];
+	
+	//for development only - toggle this to force the new database over
+	//dbMigrator.overwriteDatabase = YES;
+	
+	[dbMigrator moveDatabaseToUserDirectoryIfNeeded];
+	[dbMigrator migrateToVersion:CURRENT_SCHEMA_VERSION];
+	[dbMigrator release];
+}
+
+-(void) addLocationStripe {
+	locationStripeController = [[LocationStripeController alloc] init];
+	CGRect frame = locationStripeController.view.frame;
+	frame.origin.y = 419;
+	locationStripeController.view.frame = frame;
+	locationStripeController.location = @"Test Location";
+	[self.rootController.tabBarController.view addSubview:locationStripeController.view];
+}
+
+-(void) loadTabBar {	
+	rootController = [[RootViewController alloc] init];
+	[[NSBundle mainBundle] loadNibNamed:@"TabBar" owner:rootController options:nil];
+	[window addSubview:rootController.tabBarController.view];
+	[self addLocationStripe];
+}
+
+-(void) loadCurrentProfile {
+	ProfileRepository *profileRepository = [[ProfileRepository alloc] init];
+	self.currentProfile = [profileRepository currentProfile];
+	[profileRepository release];
+}
+
+-(void) setupInterruptionsHandler {
+	InterruptionsHandler *handler = [[InterruptionsHandler alloc] init];
+	self.interruptionsHandler = handler;
+	[handler release];
+}
+
+#pragma mark -
+#pragma mark UIApplicationDelegate
+
+- (void)applicationDidFinishLaunching:(UIApplication *)application {       
+	NSLog(@"applicationDidFinishLaunching");
+	
+<<<<<<< HEAD
+	if( getenv("NSZombieEnabled") || getenv("NSAutoreleaseFreedObjectCheckEnabled") ) {
+		NSLog(@"NSZombieEnabled/NSAutoreleaseFreedObjectCheckEnabled enabled!");
+	}
+	
+	[self initializeDatabase];
+	[self copyResourcesToDocumentsDir];
+	[self setupInterruptionsHandler];	
+	[self.interruptionsHandler applicationDidFinishLaunching];
+
+	[window addSubview:viewController.view];	
+    [window makeKeyAndVisible];	
+=======
+	[self initializeDatabase];
+	[self setupInterruptionsHandler];	
+	
+	[window addSubview:viewController.view];	
+	
+    [window makeKeyAndVisible];	
+	
+	[self.interruptionsHandler applicationDidFinishLaunching];
+>>>>>>> Added Interruptions Logic
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+	NSLog(@"applicationDidBecomeActive");
+	[self.interruptionsHandler applicationDidBecomeActive];
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+	NSLog(@"applicationWillResignActive");
+	[self.interruptionsHandler applicationWillResignActive];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+	NSLog(@"applicationWillTerminate");
+<<<<<<< HEAD
+	[self.interruptionsHandler applicationWillTerminate];	
+=======
+	[self.interruptionsHandler applicationWillTerminate];
+	
+>>>>>>> Added Interruptions Logic
+}
+
+@end

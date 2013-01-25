@@ -1,0 +1,47 @@
+{
+   "trip":{
+      "name":"Trip on May 8",
+      "journeys":[
+         {
+            "trip_id":91,
+            "ended_at":"2010-05-08T03:55:15Z",
+            "id":88,
+            "journey_events":[
+               {
+                  "timestamp":"2010-05-08T03:02:28Z",
+                  "event_id":2,
+                  "points":27.77699778,
+                  "id":49,
+                  "journey_id":87,
+                  "near":"Westheimer and Voss",
+                  "description":"Safe Driving"
+               }
+            ],
+            "total_points":27.7769977801029,
+            "miles_driven":28.0,
+            "started_at":"2010-05-08T03:02:28Z"
+         },
+         {
+            "trip_id":91,
+            "ended_at":"2010-05-28T20:14:28Z",
+            "id":89,
+            "journey_events":[
+               {
+                  "timestamp":"2010-05-28T20:14:28Z",
+                  "event_id":1,
+                  "points":-25.0,
+                  "id":50,
+                  "journey_id":88,
+                  "near":"Westheimer and Voss",
+                  "description":"Interruption"
+               }
+            ],
+            "total_points":-25.0,
+            "miles_driven":0.0,
+            "started_at":"2010-05-28T03:02:28Z"
+         }
+      ],
+      "id":91,
+      "profile_id":56
+   }
+}

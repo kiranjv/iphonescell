@@ -1,0 +1,49 @@
+//
+//  safecellAppDelegate.h
+//  safecell
+//
+//  Created by Ben Scheirman on 3/16/10.
+//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "RootViewController.h"
+#import "SCProfile.h"
+#import "LocationStripeController.h"
+#import "InterruptionsHandler.h"
+
+@interface AppDelegate : NSObject <UIApplicationDelegate> {
+    UIWindow *window;
+    UIViewController *viewController;
+	
+	RootViewController *rootController;
+	
+<<<<<<< HEAD
+=======
+	//This will be used by the fake location manager	
+	NSString *recordedWayPointsFile;
+	
+>>>>>>> Added Interruptions Logic
+	SCProfile *currentProfile;
+	LocationStripeController *locationStripeController;
+	InterruptionsHandler *interruptionsHandler;
+}
+
+@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UIViewController *viewController;
+@property (nonatomic, readonly) RootViewController *rootController;
+
+<<<<<<< HEAD
+
+=======
+@property (nonatomic, retain) NSString *recordedWayPointsFile;
+>>>>>>> Added Interruptions Logic
+@property (nonatomic, retain) SCProfile *currentProfile;
+@property (nonatomic, retain) InterruptionsHandler *interruptionsHandler;
+
+-(void) initializeDatabase;
+-(void) loadTabBar;
+-(void) loadCurrentProfile;
+
+@end
+

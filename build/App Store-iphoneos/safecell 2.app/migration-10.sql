@@ -1,0 +1,1 @@
+insert into app_settings_items(id, settings_item, value) values (2, "tracking state", "tracking off");

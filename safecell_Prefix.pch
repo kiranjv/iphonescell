@@ -1,0 +1,22 @@
+//
+// Prefix header for all source files of the 'safecell' target in the 'safecell' project
+//
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+	#import <UIKit/UIKit.h>
+	#import "NSString+Common.h"
+	#import "C1Tables.h"
+	#import "TableViewFormField.h"
+	#import "FormFieldCellController.h"
+
+	//models
+	#import "SCProfile.h"
+	#import "SCAccount.h"
+	
+	//helpers
+	#import "NavBarHelper.h"
+	#import "Graphics2DHelper.h"
+	
+	#import "Config.h"
+#endif

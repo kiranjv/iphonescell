@@ -1,0 +1,323 @@
+//
+//  AddTripViewController.m
+//  safecell
+//
+//  Created by shail on 08/05/10.
+//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//
+
+#import "AddTripViewController.h"
+#import "SCTripJourney.h"
+#import "TripInfoSection.h"
+#import "SaveTripSection.h"
+#import "ExistingTripsSection.h"
+#import "WayPointsFileHelper.h"
+#import "SubmitNewTripJourney.h"
+#import "TripRepository.h"
+#import "SCTrip.h"
+#import "SubitNewTripJourneyResponseHandler.h"
+<<<<<<< HEAD
+#import "AppDelegate.h"
+#import "InterruptionsFileHelper.h"
+#import "TripRepository.h"
+=======
+>>>>>>> Added Interruptions Logic
+
+enum {
+	kTripNameAlertViewTag = 30001,
+	kDeleteTripAlertViewTag = 30002
+};
+
+@implementation AddTripViewController
+
+@synthesize journey;
+@synthesize submitNewTripJourney;
+
+
+-(id)initWithStyle:(UITableViewStyle)style {
+	self = [super initWithStyle:style];
+	if (self != nil) {
+		
+		reactToKeyboard = NO;
+		
+		[self setUpNavigationBar];
+		
+		SCTripJourney *latestTrip = [[SCTripJourney alloc] initWithCurrentWayPointsAndInterruptions];
+		self.journey = latestTrip;		
+		[journey release];
+		
+		[self setupTable];		
+		
+	}
+	return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	if([self.journey.waypoints count] < 3) {
+		UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"The trip cannot be saved" message:@"The trip cannot be saved since it is very short." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		alertView.tag = kDeleteTripAlertViewTag;
+		alertView.delegate = self;
+		[alertView show];
+		[alertView release];
+	}
+}
+
+
+-(void) setUpNavigationBar {
+	self.navigationItem.title = @"Add Trip";
+	self.navigationItem.hidesBackButton = YES;
+	
+	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] 
+								   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+								   target:self 
+								   action:@selector(saveTripButtonTapped:)]; 
+	self.navigationItem.rightBarButtonItem = saveButton; 
+	[saveButton release]; 
+}
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+}
+
+- (void)dealloc {	
+	[journey release];
+	[selectedTrip release];
+	[tripInfoSection release];
+	[saveTripSection release];
+	[submitNewTripJourney release];
+
+    [super dealloc];
+}
+
+-(void) setupTable {
+	[self addSection:[self tripInfoSection]];
+	[self addSection:[self saveTripSection]];
+}
+
+-(TripInfoSection *) tripInfoSection {
+	
+	if(!tripInfoSection) {
+		tripInfoSection = [[TripInfoSection alloc] initWithTrip:journey parentViewController:self];
+	}
+	
+	return tripInfoSection;
+}
+
+-(SaveTripSection *) saveTripSection {
+	if(!saveTripSection) {
+		saveTripSection = [[SaveTripSection alloc] initWithoutSetup];
+		saveTripSection.parentViewController = self;
+		[saveTripSection setupSection];
+	}
+
+	return saveTripSection;
+}
+
+-(SCTrip *) selectedTrip {
+	return selectedTrip;
+}
+
+-(void) setSelectedTrip: (SCTrip *) aTrip  {
+	[selectedTrip release];
+	selectedTrip = [aTrip retain];
+	
+	if(aTrip != nil) {
+		[saveTripSection setNewTripTitle:selectedTrip.name];
+	}
+}
+
+-(BOOL) validateNameOfTrip {
+	NSString * nameOfTrip = [saveTripSection newTripTitle];
+	
+	if(nameOfTrip != nil) {
+		nameOfTrip = [nameOfTrip stringByStrippingWhitespace];
+	}
+	
+	if((nameOfTrip == nil) || [nameOfTrip length] == 0) {
+		UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Specify Trip Title" message:@"Please either specify a new trip title or select an existing trip. " delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		alertView.tag = kTripNameAlertViewTag;
+		[alertView show];
+		[alertView release];
+		return NO;
+	} else {
+		return YES;
+	}
+}
+
+/*
+-(void) loadWayPoints {
+	WayPointsFileHelper *wayPointsFileHelper = [[WayPointsFileHelper alloc] initWithNewFile:NO];
+	
+	SCWaypoint *wayPoint = nil;
+	
+	while ((wayPoint = [wayPointsFileHelper readNextWayPoint]) != nil) {
+		[self.journey.waypoints addObject:wayPoint];
+	}
+	
+	[wayPointsFileHelper release];
+}
+
+-(void) prepareJourneyForUpload {
+	[self loadWayPoints];
+}
+*/
+
+/*
+-(void) persistJourney {	
+	TripRepository *tripRepository = [[TripRepository alloc] init];
+	
+	if(self.selectedTrip == nil) {
+		SCTrip *newTrip = [[SCTrip alloc] init];
+		newTrip.name = [saveTripSection newTripTitle];
+		
+		[tripRepository saveTrip:newTrip];
+		
+		self.journey.tripId = newTrip.tripId;
+		
+		[tripRepository saveJourney:self.journey];
+		
+		[newTrip release];
+	} else {
+		self.journey.tripId = selectedTrip.tripId;
+		[tripRepository saveJourney:self.journey];
+	}
+	
+	[self loadWayPoints];
+	[self.journey updateWayPointJourneyIds];
+	
+	for(SCWaypoint * waypoint in self.journey.waypoints) {
+		[tripRepository saveWayPoint:waypoint];
+	}
+	
+	[tripRepository release];
+}
+*/
+ 
+-(void) deleteTrip {
+	WayPointsFileHelper *wayPointsFileHelper = [[WayPointsFileHelper alloc] initWithNewFile:NO];
+	[wayPointsFileHelper deleteWayPointsFile];
+	[wayPointsFileHelper deleteWayPointsZipFile];
+	[wayPointsFileHelper release];
+	
+	InterruptionsFileHelper *interruptionsFileHelper = [[InterruptionsFileHelper alloc] initWithNewFile:NO];
+	[interruptionsFileHelper deleteInterruptionsFile];
+	[interruptionsFileHelper release];
+	
+	TripRepository *tripRepository = [[TripRepository alloc] init];
+	[tripRepository clearSchoolProximityData];
+	[tripRepository release];
+}
+
+#pragma mark -
+#pragma mark Actions
+
+-(void) saveTripButtonTapped: (id) sender {
+	
+	if(![self validateNameOfTrip]) {
+		return;
+	}
+	
+	NSString * nameOfTrip = [saveTripSection newTripTitle];
+	
+	if( (self.selectedTrip != nil) && ([nameOfTrip isEqualToString:self.selectedTrip.name])) {
+		self.journey.tripName = self.selectedTrip.name;
+	} else {
+		self.journey.tripName = nameOfTrip;
+	}
+	
+<<<<<<< HEAD
+	//[self persistJourney];	
+=======
+	//[self persistJourney];
+		
+	NSLog(@"2. prepareJourneyForUpload: %d", [journey.waypoints count]);
+	
+>>>>>>> Added Interruptions Logic
+	
+	SubmitNewTripJourney * submitDialog = [[SubmitNewTripJourney alloc] init];
+	self.submitNewTripJourney = submitDialog;
+	[submitDialog release];
+	
+	submitNewTripJourney.netWorkDelegate = self;
+	submitNewTripJourney.delegate = self;
+	submitNewTripJourney.tripJourney = self.journey;
+	[submitNewTripJourney showModelFromBottom];			
+}
+
+<<<<<<< HEAD
+=======
+-(void) processResonse:(NSString *) responseString {
+	
+}
+
+>>>>>>> Added Interruptions Logic
+#pragma mark -
+#pragma mark NetworkOperationDelegate Methods 
+
+-(void) networkOperationSucceeded: (NSString *) responseString {
+<<<<<<< HEAD
+	SubitNewTripJourneyResponseHandler *responseHandler = [[SubitNewTripJourneyResponseHandler alloc] init];
+	responseHandler.jsonResponse = responseString;
+	[responseHandler process];
+	[responseHandler release];
+=======
+>>>>>>> Added Interruptions Logic
+	[submitNewTripJourney hide];
+	SubitNewTripJourneyResponseHandler *responseHandler = [[SubitNewTripJourneyResponseHandler alloc] init];
+	responseHandler.jsonResponse = responseString;
+	
+	[responseHandler process];
+	
+	[responseHandler release];
+}
+
+-(void) networkOperationFailed: (NSString *) errorString {
+	NSLog(@"errorString: %@", errorString);
+	[submitNewTripJourney hide];
+}
+
+-(void) networkOpreationCancelled {
+	NSLog(@"networkOpreationCancelled");
+	[submitNewTripJourney hide];
+}
+
+-(void) dismissSelf {
+	AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+	appDelegate.interruptionsHandler.continueTrackingAction = kContinueTrackingActionNone;
+	
+	[self deleteTrip];	
+	[self.parentViewController dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark -
+#pragma mark ModalViewControllerDelegate Methods 
+
+<<<<<<< HEAD
+-(void) modalViewDidHide {	
+	[self dismissSelf];
+=======
+-(void) modalViewDidHide {
+	[self.parentViewController dismissModalViewControllerAnimated:YES];
+>>>>>>> Added Interruptions Logic
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate Methods
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	switch (alertView.tag) {
+		case kDeleteTripAlertViewTag:
+<<<<<<< HEAD
+			[self dismissSelf];
+=======
+			[self deleteTrip];		
+			[self.parentViewController dismissModalViewControllerAnimated:YES];
+>>>>>>> Added Interruptions Logic
+		break;
+	}
+}
+
+@end
