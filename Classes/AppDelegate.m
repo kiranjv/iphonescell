@@ -19,6 +19,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "HomeScreenViewController.h"
+#import "WayPointsFileHelper.h"
+#import "AddTripViewController.h"
 
 #define CURRENT_SCHEMA_VERSION 18
 
@@ -43,6 +45,8 @@ static const int kDefaultImageViewTag = 12567;
 @synthesize disableWebValue,logWayPointValue,is_abandon_trip;
 @synthesize tripStartTime;
 @synthesize isTripStarted;
+@synthesize is_AppBackground;
+@synthesize isSaveTrip;
 
 
 -(void)calculateSpeed :(CLLocation *)location{
@@ -147,6 +151,7 @@ static const int kDefaultImageViewTag = 12567;
 	[UIApplication sharedApplication].idleTimerDisabled = YES;
 	
 	[self initializeDatabase];
+   // [self isTripDataExist];
 	[self copyResourcesToDocumentsDir];
 	[self cleanUpRules];
 	[self setupInterruptionsHandler];	
@@ -158,6 +163,39 @@ static const int kDefaultImageViewTag = 12567;
 	if (![window isKeyWindow]) {
 		[window makeKeyAndVisible];
 	}
+}
+
+-(void) isTripDataExist {
+    NSLog(@"isTripdataExist metod");
+    WayPointsFileHelper *wayPointsFileHelper = [[WayPointsFileHelper alloc] initWithNewFile:NO];
+    int count = [wayPointsFileHelper countWaypointsInFile];	
+    [wayPointsFileHelper release];
+    NSLog(@"total points in journey= %d",count);
+    NSString *stringData = [NSString stringWithFormat:@"Came from switch off. PRevious trip total points:%d", count];
+   // [ self showAlertView: stringData];
+    if (count > 5) {
+        NSLog(@"Activating falg to add trip view data to save server");
+        self.isSaveTrip = @"YES";
+        NSLog(@"isSaveTrip status:%@",isSaveTrip);
+        
+//               AddTripViewController * addTripViewController = [[AddTripViewController alloc] initWithStyle:UITableViewStylePlain];
+//        [addTripViewController saveTripButtonTapped];
+////        addTripViewController.delegate = self;
+//        UINavigationController *navController = [[UINavigationController alloc]
+//                                                 initWithRootViewController:addTripViewController];
+//        
+//        //Hack to get the right tint color since DecorateNavBar(self); in AddTripViewController does nothing.
+//        navController.navigationBar.tintColor = [UIColor colorWithRed:.35 green:.43 blue:.58 alpha:1];
+//        
+//        [self presentViewController:navController animated:YES completion:nil];
+//        
+//        [addTripViewController release];
+//        [navController release];
+    }
+    
+   
+    
+ 
 }
 
 -(void) showWaitingForReachabilityMessage {
@@ -254,7 +292,12 @@ static const int kDefaultImageViewTag = 12567;
 	[self performPostReachabilityCheckStartUp];
 }
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {   
+- (void)applicationDidFinishLaunching:(UIApplication *)application {
+    NSLog(@"applicationDidFinishLaunching");
+    self.is_AppBackground = @"FALSE";
+    self.isSaveTrip = @"NO";
+    NSLog(@"is_AppBackground: %@",is_AppBackground);
+
 	[FlurryAPI startSessionWithLocationServices:@"KWS5PU6MCA9YZ9NBUFWU"];
 	InstallUncaughtExceptionHandler();
 	[self verifyReachabilityAndStartup];	
@@ -262,14 +305,34 @@ static const int kDefaultImageViewTag = 12567;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	NSLog(@"applicationDidBecomeActive");
+    NSLog(@"is_AppBackground: %@",is_AppBackground);
     
-	[self.interruptionsHandler applicationDidBecomeActive];
+    if ([self.is_AppBackground equalsIgnoreCase:@"FALSE"]) {
+        NSLog(@"Application came from switch off");
+       
+        [self isTripDataExist];
+    }
+    else {
+        NSLog(@"Application came from background");
+       
+      // [ self showAlertView:@"came from background"];
+         self.is_AppBackground = @"FALSE";
+    }
+    if (isTripStarted) {
+        [self.interruptionsHandler applicationDidBecomeActive];
+    }
+	
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
 	NSLog(@"applicationWillResignActive");
-	[self.interruptionsHandler applicationWillResignActive];
-}
+    NSLog(@"is_AppBackground value: %@",is_AppBackground);
+    self.is_AppBackground = @"TRUE";
+    NSLog(@"is_AppBackground changed to: %@",is_AppBackground);
+    if (isTripStarted) {
+    [self.interruptionsHandler applicationWillResignActive];
+    }
+    }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	NSLog(@"applicationWillTerminate: %@", self.interruptionsHandler);
@@ -294,13 +357,23 @@ static const int kDefaultImageViewTag = 12567;
 	noti.alertBody = @" running in background";
 	//noti.applicationIconBadgeNumber = 1;
     //noti.applicationIconBadgeNumber 
-    [[UIApplication sharedApplication]scheduleLocalNotification:noti];
+    //[[UIApplication sharedApplication]scheduleLocalNotification:noti];
     [noti release];
 
 }
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
 //    HomeScreenViewController *mainViewController = [[HomeScreenViewController alloc]init] ;
 //    [mainViewController switchToBackgroundMode:YES];
+}
+
+-(void) showAlertView:( NSString *) message {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
 }
 
 @end

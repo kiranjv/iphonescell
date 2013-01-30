@@ -833,10 +833,32 @@ AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]dele
 //        NSFileManager *fileManager = [NSFileManager defaultManager];
 //        [fileManager removeItemAtPath:termsAndCond error:NULL];
 //    }
-    
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    if ([app.isSaveTrip equalsIgnoreCase:@"YES"]) {
+        NSLog(@"Call to save trip from home screen view");
+        [cllocationManager stopUpdatingLocation];
+		
+		self.cllocationManager.delegate = nil;
+		self.cllocationManager = nil;
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+        [app stopLocationHelper];
+        
+		[wayPointsFileHelper closeWayPointFile];
+		[wayPointsFileHelper archiveWayPointsFile];
+		
+		
+		[self cleanUpRulesDownloadManager];
+		[self cleanUpSchoolDownloadManager];
+	
+		[notificationSoundsHelper cleanUpBeforeStoppingTrip];
+        
+		[self stopTracking];
+        app.isSaveTrip = @"NO";
+        
+    }
     
     reloadTimer = [NSTimer scheduledTimerWithTimeInterval:25.0 target:self selector:@selector(startBasedOnSpeed) userInfo:nil repeats:YES];
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
     UIAlertView *alert;
     if ([app.profileStatusCheck isEqualToString:@"closed"]) {
         
@@ -1051,10 +1073,11 @@ AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]dele
         
         app.isTripStarted = YES;
         
-        [[[[iToast makeText:[NSString stringWithFormat:@"Trip speed raised to configured speed."]]setGravity:iToastGravityCenter] setDuration:iToastDurationShort] show];
+        
+      //  [[[[iToast makeText:[NSString stringWithFormat:@"Trip speed raised to configured speed."]]setGravity:iToastGravityCenter] setDuration:iToastDurationShort] show];
         if (splashDisplayValue == 1) {
             
-            [[[[iToast makeText:[NSString stringWithFormat:@"Starting trip with splash display."]]setGravity:iToastGravityCenter] setDuration:iToastDurationShort] show];
+//            [[[[iToast makeText:[NSString stringWithFormat:@"Starting trip with splash display."]]setGravity:iToastGravityCenter] setDuration:iToastDurationShort] show];
            // [app stopLocationHelper];
             [reloadTimer invalidate];
             reloadTimer = nil;
@@ -1063,7 +1086,7 @@ AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]dele
         else{
             
             [self configureLocationManager];
-            [[[[iToast makeText:[NSString stringWithFormat:@" Trip Starts with no splash display "]]setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
+//            [[[[iToast makeText:[NSString stringWithFormat:@" Trip Starts with no splash display "]]setGravity:iToastGravityCenter] setDuration:iToastDurationNormal] show];
             [reloadTimer invalidate];
             reloadTimer = nil;
             NSString *tripGUID = [KeyUtils GUID];
@@ -1276,7 +1299,7 @@ AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]dele
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
         appDelegate.speedValue = 0;
         
-       [[[[iToast makeText:[NSString stringWithFormat:@" AvgSpeed :%.2f",calculatedSpeed]]setGravity:iToastGravityTop] setDuration:500] show];
+       //[[[[iToast makeText:[NSString stringWithFormat:@" AvgSpeed :%.2f",calculatedSpeed]]setGravity:iToastGravityTop] setDuration:500] show];
         appDelegate.speedValue = (int)calculatedSpeed;
     }
     

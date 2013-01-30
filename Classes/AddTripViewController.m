@@ -139,6 +139,11 @@ enum {
             
     }
 
+    // clear the tripsave flag
+    NSLog(@"clear the tripsave flag");
+     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    appDelegate.isTripStarted = NO;
+    
 	//[self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2];
 	if (poppedMapDueToMemoryWarning) {
 		[self clearPoppedMapWarningFlag];

@@ -1006,8 +1006,8 @@ static const float kSchoolCheckRadius = 0.3;
     if (appDelegate.speedValue < appDelegate.tripStartTime) {
         /*start atuotripstop  timer if not exist */
         if(timerForSavingTrip == nil && ![timerForSavingTrip isValid] ) {
-        
-        [[[[iToast makeText:[NSString stringWithFormat:@"Starting AutoTripStop timer."]]setGravity:iToastGravityBottom] setDuration:iToastDurationLong] show];
+//        
+//        [[[[iToast makeText:[NSString stringWithFormat:@"Starting AutoTripStop timer."]]setGravity:iToastGravityBottom] setDuration:iToastDurationLong] show];
         NSLog(@"Auto trip stop timer started.");
         timerForSavingTrip = [NSTimer scheduledTimerWithTimeInterval:appDelegate.tripStopTime * 60 target:self selector:@selector(tripSaveToServer) userInfo:nil repeats:NO];
         }
@@ -1016,7 +1016,7 @@ static const float kSchoolCheckRadius = 0.3;
     } // end of speed lessthan config value. 
     else{
         if ([timerForSavingTrip isValid]) {
-            [[[[iToast makeText:[NSString stringWithFormat:@"Canceling AutoTripStop timer."]]setGravity:iToastGravityBottom] setDuration:iToastDurationLong] show];
+//            [[[[iToast makeText:[NSString stringWithFormat:@"Canceling AutoTripStop timer."]]setGravity:iToastGravityBottom] setDuration:iToastDurationLong] show];
             NSLog(@"Auto trip stop timer Cancled.");
             
             [timerForSavingTrip invalidate];
@@ -1126,7 +1126,7 @@ static const float kSchoolCheckRadius = 0.3;
     NSLog(@"Trip start speed: %d, Current speed: %d, Trip stop time: %d: ", appdelegate.tripStartTime, appdelegate.speedValue, appdelegate.tripStopTime);
     
     if (appdelegate.speedValue < appdelegate.tripStartTime) {
-        [[[[iToast makeText:[NSString stringWithFormat:@" Auto trip stop timer started."]]setGravity:iToastGravityTop] setDuration:iToastDurationNormal] show];
+//        [[[[iToast makeText:[NSString stringWithFormat:@" Auto trip stop timer started."]]setGravity:iToastGravityTop] setDuration:iToastDurationNormal] show];
         NSLog(@"Auto trip stop timer started.");
         [stopTripTimer invalidate];
         stopTripTimer = nil;
@@ -1136,7 +1136,7 @@ static const float kSchoolCheckRadius = 0.3;
     }else{
         // stop the 60 seconds timer
         if ([timerForSavingTrip isValid]) {
-            [[[[iToast makeText:[NSString stringWithFormat:@" Auto trip stop timer cancled."]]setGravity:iToastGravityTop] setDuration:iToastDurationNormal] show];
+//            [[[[iToast makeText:[NSString stringWithFormat:@" Auto trip stop timer cancled."]]setGravity:iToastGravityTop] setDuration:iToastDurationNormal] show];
             NSLog(@"Auto trip stop timer Cancled.");
             [timerForSavingTrip invalidate];
             timerForSavingTrip = nil;

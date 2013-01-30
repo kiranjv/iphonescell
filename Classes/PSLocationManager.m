@@ -361,7 +361,7 @@ static const CGFloat kSpeedNotSet = -1.0;
                     if ([self.speedHistory count] > 1) {
                         double totalSpeed = 0;
                         for (NSNumber *speedNumber in self.speedHistory) {
-                            NSLog(@"Current Speed: %f", speedNumber);
+                        
                             totalSpeed += [speedNumber doubleValue];
                         }
                         if (canUpdateDistanceAndSpeed) {

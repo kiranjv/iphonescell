@@ -54,8 +54,12 @@
     int logWayPointValue;
     BOOL is_abandon_trip;
     BOOL isTripStarted;
+    NSString *is_AppBackground;
     int currentSpeed;
+    NSString *isSaveTrip;
 }
+@property (nonatomic, strong) NSString *isSaveTrip;
+@property (nonatomic, strong) NSString *is_AppBackground;
 @property (nonatomic, assign) int currentSpeed;
 @property (nonatomic, assign) BOOL is_abandon_trip;
 @property (nonatomic, assign) BOOL isTripStarted;
