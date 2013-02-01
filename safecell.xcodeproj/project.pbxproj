@@ -2628,9 +2628,9 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
+				"PROVISIONING_PROFILE[sdk=*]" = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 			};
@@ -2641,8 +2641,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = safecell_Prefix.pch;
@@ -2653,8 +2653,8 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
@@ -2666,8 +2666,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -2680,8 +2680,8 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos6.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2692,8 +2692,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = safecell_Prefix.pch;
@@ -2704,8 +2704,8 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
@@ -2751,8 +2751,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -2765,8 +2765,8 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos6.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2777,8 +2777,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = safecell_Prefix.pch;
@@ -2789,8 +2789,8 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "38A46BE4-1506-49AE-B393-664CBF30FB9B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
@@ -2903,8 +2903,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -2917,8 +2917,8 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos6.0;
 			};
 			name = "App Store";
@@ -2928,8 +2928,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = safecell_Prefix.pch;
@@ -2940,8 +2940,8 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
@@ -3001,8 +3001,8 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
+				"PROVISIONING_PROFILE[sdk=*]" = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -3013,8 +3013,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"ARCHS[sdk=*]" = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: W2W LLC";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -3027,8 +3027,8 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28F18523-0D58-4C8D-853D-FBBFAFEF46D1";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos;
 			};
 			name = Release;

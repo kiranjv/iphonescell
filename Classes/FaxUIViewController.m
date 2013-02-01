@@ -38,7 +38,7 @@
     aWebView.autoresizingMask=(UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
     
     [aWebView setDelegate:self];
-    NSString *urlAddress = @"http://www.safecellapp.mobi/api/1/site_setting/terms_of_service.html"; // test view is working with url to webpage
+    NSString *urlAddress = @"http://www.safecellapp.mobi/api/1/site_setting/iphonefaqs.html"; // test view is working with url to webpage
     
     NSURL *url = [NSURL URLWithString:urlAddress];
     
@@ -53,18 +53,18 @@
 -(void) viewWillAppear:(BOOL)animated {
     
     NSLog(@"Fax view will appear");
-    CGRect textViewFrame = CGRectMake(0, 0, 320, 350);
+    //CGRect textViewFrame = CGRectMake(0, 0, 320, 350);
     
     //CGRect textViewFrame = CGRectMake(20.0f, 20.0f, 280.0f, 124.0f);
-    UITextView *textView = [[UITextView alloc] initWithFrame:textViewFrame];
-    [textView setEditable:NO];
-    textView.text = @"";
-    textView.returnKeyType = UIReturnKeyDone;
-    [self.view addSubview:textView];
+//    UITextView *textView = [[UITextView alloc] initWithFrame:textViewFrame];
+//    [textView setEditable:NO];
+//    textView.text = @"";
+//    textView.returnKeyType = UIReturnKeyDone;
+//    [self.view addSubview:textView];
     [self setUpNavigationBar];
     //[self loadFaxData];
     
-    //[self loadWebViewField];
+    [self loadWebViewField];
         
     
 }
