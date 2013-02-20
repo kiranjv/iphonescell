@@ -187,15 +187,16 @@ static const NSInteger kDescriptionLabelTag = 0;
 	return cell;
 }
 
--(NSString *) interruptionMessage: (SCJourneyEvent *) interruption {	
-
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];	
+-(NSString *) interruptionMessage: (SCJourneyEvent *) interruption {
+  
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"hh:mm a"];
-	
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
 	NSString * interruptionTime = [dateFormatter stringFromDate:interruption.timestamp];
 	[dateFormatter release];
 	NSString *message = [NSString stringWithFormat:@"SAFECELL INTERRUPTION AT %@", interruptionTime];
-	
+    
 	return message;
 }
 

@@ -241,6 +241,7 @@
 		5F93CA4E14BBF93A005E1A05 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F93CA4D14BBF93A005E1A05 /* AudioToolbox.framework */; };
 		5F93CA5014BBF95F005E1A05 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F93CA4F14BBF95F005E1A05 /* libz.dylib */; };
 		5FB194131623DBFC0068C7E9 /* emergencyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FB194121623DBFC0068C7E9 /* emergencyButton.png */; };
+		5FB7B58916C37A960003E18E /* fax_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FB7B58816C37A960003E18E /* fax_icon.png */; };
 		5FBDE6A416195F3D00DAA14A /* SBCheckPoints.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FBDE67A16195F3D00DAA14A /* SBCheckPoints.xib */; };
 		5FBDE6A516195F3D00DAA14A /* SBCheckPointViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDE67C16195F3D00DAA14A /* SBCheckPointViewController.m */; };
 		5FBDE6A616195F3D00DAA14A /* SBGoogleMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDE67F16195F3D00DAA14A /* SBGoogleMap.m */; };
@@ -262,6 +263,7 @@
 		5FCF226B16A6C88300C12276 /* banglocpoints.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FCF226A16A6C88200C12276 /* banglocpoints.gpx */; };
 		5FD78DE1162FBD7F00C0390C /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD78DE0162FBD7F00C0390C /* iToast.m */; };
 		5FD78DF71630188800C0390C /* PSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD78DF61630188800C0390C /* PSLocationManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5FDD4B2316C4C64200052292 /* new_horizontal_branding_reg_v2_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDD4B2216C4C64200052292 /* new_horizontal_branding_reg_v2_1.png */; };
 		5FED9FBA16882CAC006A9CB5 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FED9FB916882CAC006A9CB5 /* Default.png */; };
 		5FF0CD56161C555A00C6DD23 /* submit_nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FF0CD55161C555A00C6DD23 /* submit_nor.png */; };
 		B50ED10B119C38E00044A81A /* DebugTrackingInformationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B50ED109119C38E00044A81A /* DebugTrackingInformationController.m */; };
@@ -782,6 +784,7 @@
 		5F93CA4D14BBF93A005E1A05 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5F93CA4F14BBF95F005E1A05 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5FB194121623DBFC0068C7E9 /* emergencyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emergencyButton.png; sourceTree = "<group>"; };
+		5FB7B58816C37A960003E18E /* fax_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fax_icon.png; sourceTree = "<group>"; };
 		5FBDE67A16195F3D00DAA14A /* SBCheckPoints.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SBCheckPoints.xib; sourceTree = "<group>"; };
 		5FBDE67B16195F3D00DAA14A /* SBCheckPointViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBCheckPointViewController.h; sourceTree = "<group>"; };
 		5FBDE67C16195F3D00DAA14A /* SBCheckPointViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBCheckPointViewController.m; sourceTree = "<group>"; };
@@ -819,6 +822,7 @@
 		5FD78DE0162FBD7F00C0390C /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iToast.m; path = ../Classes/iToast.m; sourceTree = "<group>"; };
 		5FD78DF51630188800C0390C /* PSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSLocationManager.h; sourceTree = "<group>"; };
 		5FD78DF61630188800C0390C /* PSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSLocationManager.m; sourceTree = "<group>"; };
+		5FDD4B2216C4C64200052292 /* new_horizontal_branding_reg_v2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_horizontal_branding_reg_v2_1.png; sourceTree = "<group>"; };
 		5FED9FB916882CAC006A9CB5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5FF0CD55161C555A00C6DD23 /* submit_nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = submit_nor.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* safecell-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "safecell-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -1969,6 +1973,8 @@
 		B5A0CA56117E4B03008323AD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5FDD4B2216C4C64200052292 /* new_horizontal_branding_reg_v2_1.png */,
+				5FB7B58816C37A960003E18E /* fax_icon.png */,
 				5F40565D16AFB62C00E97B4C /* final-att-horizontal-branding.png */,
 				5F40565B16AFB31400E97B4C /* finalatt_horizontalbranding.png */,
 				5F2C3D8F16AD0D2E00166C5C /* NewSafecell_tracking_background1.png */,
@@ -2319,6 +2325,8 @@
 				5F2C3D9016AD0D3100166C5C /* NewSafecell_tracking_background1.png in Resources */,
 				5F40565C16AFB31400E97B4C /* finalatt_horizontalbranding.png in Resources */,
 				5F40565E16AFB62C00E97B4C /* final-att-horizontal-branding.png in Resources */,
+				5FB7B58916C37A960003E18E /* fax_icon.png in Resources */,
+				5FDD4B2316C4C64200052292 /* new_horizontal_branding_reg_v2_1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2613,7 +2621,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: W2W LLC";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Imtiyaz Moledina (UVAAHFPADC)";
 				COPY_PHASE_STRIP = NO;
@@ -2628,7 +2636,7 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				"PROVISIONING_PROFILE[sdk=*]" = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "169DA4DB-C962-4EB9-AECD-52FAAC46EDE5";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2789,7 +2797,7 @@
 					"\"$(SRCROOT)/Classes/FlurryLibWithLocation\"",
 				);
 				PRODUCT_NAME = safecell;
-				PROVISIONING_PROFILE = "38A46BE4-1506-49AE-B393-664CBF30FB9B";
+				PROVISIONING_PROFILE = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EFAE9E7-8E55-423E-914F-0541053C69DA";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;

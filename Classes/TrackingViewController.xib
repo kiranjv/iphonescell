@@ -46,7 +46,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="18901190"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -56,7 +55,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">final-att-horizontal-branding.png</string>
+							<string key="NSResourceName">new_horizontal_branding_reg_v2_1.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="339087816">
@@ -64,7 +63,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 367}, {161, 35}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -103,7 +101,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 33}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="955467910"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -120,7 +117,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{50, 280}, {53, 53}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="800301943"/>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -135,7 +131,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{134, 280}, {53, 53}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="948029829"/>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -150,7 +145,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{218, 280}, {53, 53}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="989317720"/>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -165,7 +159,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{55, 333}, {42, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="555869653"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -198,7 +191,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{139, 333}, {42, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="644396997"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -222,7 +214,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{223, 333}, {42, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="339087816"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -244,7 +235,6 @@
 				</object>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="836201340"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -471,153 +461,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">34</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">TrackingViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>btnMapButtonTapped:</string>
-							<string>pauseStartTrackingButtonTapped:</string>
-							<string>placeEmergencyCallButtonTapped:</string>
-							<string>stopButtonTapped:</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>btnMapButtonTapped:</string>
-							<string>pauseStartTrackingButtonTapped:</string>
-							<string>placeEmergencyCallButtonTapped:</string>
-							<string>stopButtonTapped:</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">btnMapButtonTapped:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">pauseStartTrackingButtonTapped:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">placeEmergencyCallButtonTapped:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">stopButtonTapped:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>btnMap</string>
-							<string>myMapView</string>
-							<string>pauseStartTrackingButton</string>
-							<string>phoneStatusImageView</string>
-							<string>phoneStatusLabel</string>
-							<string>schoolStatusImageView</string>
-							<string>schoolStatusLabel</string>
-							<string>smsStatusImageView</string>
-							<string>smsStatusLabel</string>
-							<string>trackingStatusMessageImageView</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIButton</string>
-							<string>MKMapView</string>
-							<string>UIButton</string>
-							<string>UIImageView</string>
-							<string>UILabel</string>
-							<string>UIImageView</string>
-							<string>UILabel</string>
-							<string>UIImageView</string>
-							<string>UILabel</string>
-							<string>UIImageView</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>btnMap</string>
-							<string>myMapView</string>
-							<string>pauseStartTrackingButton</string>
-							<string>phoneStatusImageView</string>
-							<string>phoneStatusLabel</string>
-							<string>schoolStatusImageView</string>
-							<string>schoolStatusLabel</string>
-							<string>smsStatusImageView</string>
-							<string>smsStatusLabel</string>
-							<string>trackingStatusMessageImageView</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">btnMap</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">myMapView</string>
-								<string key="candidateClassName">MKMapView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">pauseStartTrackingButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">phoneStatusImageView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">phoneStatusLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">schoolStatusImageView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">schoolStatusLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">smsStatusImageView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">smsStatusLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">trackingStatusMessageImageView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/TrackingViewController.h</string>
-					</object>
-				</object>
-			</object>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
@@ -635,7 +479,7 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>emergency_call_button.png</string>
-				<string>final-att-horizontal-branding.png</string>
+				<string>new_horizontal_branding_reg_v2_1.png</string>
 				<string>phone-inactive.png</string>
 				<string>school-inactive.png</string>
 				<string>sms-inactive.png</string>

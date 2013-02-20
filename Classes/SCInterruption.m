@@ -171,9 +171,9 @@ static NSString *SMS_RULE_ACTIVE = @"sms_rule_flag";
 	
 	//[dictionary setObject:[NSNumber numberWithFloat:self.longitude] forKey:LONGITUDE];
 	//[dictionary setObject:[NSNumber numberWithFloat:self.latitude] forKey:LATITUDE];
-    NSLog(@"interr long = %f",self.longitude);
+    NSLog(@"interruption longitude = %f",self.longitude);
     [dictionary setObject:[NSString stringWithFormat:@"%f",self.longitude] forKey:LONGITUDE];
-    NSLog(@"interr lat = %f",self.latitude);
+    NSLog(@"interruption lattitude = %f",self.latitude);
     [dictionary setObject:[NSString stringWithFormat:@"%f",self.latitude] forKey:LATITUDE];
 	[dictionary setObject:[NSNumber numberWithFloat:self.estimatedSpeed] forKey:ESTIMATED_SPEED];
 	
