@@ -54,6 +54,7 @@
     int logWayPointValue;
     BOOL is_abandon_trip;
     BOOL isTripStarted;
+    BOOL isMapInterruption;
     NSString *is_AppBackground;
     int currentSpeed;
     NSString *isSaveTrip;
@@ -63,6 +64,7 @@
 @property (nonatomic, assign) int currentSpeed;
 @property (nonatomic, assign) BOOL is_abandon_trip;
 @property (nonatomic, assign) BOOL isTripStarted;
+@property (nonatomic, assign) BOOL isMapInterruption;
 @property (nonatomic, assign) int disableWebValue;
 @property (nonatomic, assign) int logWayPointValue;
 @property (nonatomic, retain) IBOutlet UIWindow *window;

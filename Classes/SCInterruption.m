@@ -97,10 +97,15 @@ static NSString *SMS_RULE_ACTIVE = @"sms_rule_flag";
 	if (kInterruptionUseStatusFlags) {
 		
 		id schoolZoneActiveObj = [dict objectForKey:SCHOOL_ZONE_ACTIVE];
+        NSLog(@"schoolZoneActiveObj: %@", schoolZoneActiveObj);
 		
 		if (schoolZoneActiveObj == nil) {
 			interruption.schoolZoneActive = @"VIOLATION";
-		} else {
+		}
+        else if ([schoolZoneActiveObj isEqual: @"MAPS"]) {
+            interruption.schoolZoneActive = @"MAPS";
+        }
+        else {
 			//interruption.schoolZoneActive = [schoolZoneActiveObj boolValue];
             interruption.schoolZoneActive = @"VIOLATION";
 		}
@@ -180,9 +185,11 @@ static NSString *SMS_RULE_ACTIVE = @"sms_rule_flag";
 	[dictionary setObject:[NSNumber numberWithBool:self.paused] forKey:PAUSED];
 	[dictionary setObject:[NSNumber numberWithBool:self.terminatedApp] forKey:TERMINATED_APP];
 	
+    
 	if(kInterruptionUseStatusFlags) {
 		//[dictionary setObject:[NSNumber numberWithBool:self.schoolZoneActive] forKey:SCHOOL_ZONE_ACTIVE];
-        [dictionary setObject:@"VIOLATION" forKey:SCHOOL_ZONE_ACTIVE];
+      
+        [dictionary setObject:self.schoolZoneActive forKey:SCHOOL_ZONE_ACTIVE];
 		[dictionary setObject:[NSNumber numberWithBool:self.phoneRuleActive] forKey:PHONE_RULE_ACTIVE];
 		[dictionary setObject:[NSNumber numberWithBool:self.smsRuleActive] forKey:SMS_RULE_ACTIVE];
 	}

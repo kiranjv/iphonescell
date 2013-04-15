@@ -76,7 +76,7 @@
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:kTimeStampDateFormat];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+   // [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
 	waypoint.timeStamp = [dateFormatter dateFromString:[dict objectForKey:@"timestamp"]];
 	[dateFormatter release];
 	
@@ -165,7 +165,7 @@
 - (id)proxyForJson {
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:kTimeStampDateFormat];
-	[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+	//[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
 	NSString *timeStampStr = nil;
 	
 	if(self.timeStamp) {

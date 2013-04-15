@@ -43,6 +43,8 @@ typedef enum {
 -(void) trackingPaused;
 -(void) trackingResumed;
 
+-(void) wirteMapInterruption;
+
 -(void) applicationWillResignActive;
 -(void) applicationDidBecomeActive;
 

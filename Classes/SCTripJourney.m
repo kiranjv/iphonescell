@@ -73,7 +73,8 @@
 				[waypoints addObject:waypoint];
 				
 				if(firstIteration) {					
-					self.tripDate = waypoint.timeStamp;		
+					self.tripDate = waypoint.timeStamp;
+                    NSLog(@"Trip date: %@ ",self.tripDate);
 					firstIteration = NO;
 				}
 				

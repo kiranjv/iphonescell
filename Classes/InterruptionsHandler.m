@@ -113,11 +113,21 @@
 #pragma mark -
 #pragma mark applicationLifeCycle
 
+-(void) wirteMapInterruption {
+    if([self isTracking]) {
+		self.currentInterruption = [SCInterruption interruptionStartingNowWithSchoolZoneActive:@"MAPS" phoneRuleActive:self.phoneRuleActive smsRuleActive:self.smsRuleActive];
+		[self.currentInterruption setPropertiesFromWaypoint:self.previousWaypoint];
+        self.currentInterruption.schoolZoneActive = @"MAPS";
+		[interruptionsFileHelper writeInterruption:self.currentInterruption withOptionalProperties:NO];
+	}
+}
+
 -(void) applicationWillResignActive {	
 	if([self isTracking]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"applicationWillResignActive" object:nil];
 		self.currentInterruption = [SCInterruption interruptionStartingNowWithSchoolZoneActive:self.schoolZoneActive phoneRuleActive:self.phoneRuleActive smsRuleActive:self.smsRuleActive];
 		[self.currentInterruption setPropertiesFromWaypoint:self.previousWaypoint];
+        
 		[interruptionsFileHelper writeInterruption:self.currentInterruption withOptionalProperties:NO];
 	}	
 }

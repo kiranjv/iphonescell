@@ -47,7 +47,7 @@ static const int kDefaultImageViewTag = 12567;
 @synthesize isTripStarted;
 @synthesize is_AppBackground;
 @synthesize isSaveTrip;
-
+@synthesize isMapInterruption;
 
 -(void)calculateSpeed :(CLLocation *)location{
     
@@ -296,6 +296,8 @@ static const int kDefaultImageViewTag = 12567;
     NSLog(@"applicationDidFinishLaunching");
     self.is_AppBackground = @"FALSE";
     self.isSaveTrip = @"NO";
+    self.isMapInterruption = NO;
+     
     NSLog(@"is_AppBackground: %@",is_AppBackground);
 
 	[FlurryAPI startSessionWithLocationServices:@"KWS5PU6MCA9YZ9NBUFWU"];
@@ -321,6 +323,8 @@ static const int kDefaultImageViewTag = 12567;
     if (isTripStarted) {
         [self.interruptionsHandler applicationDidBecomeActive];
     }
+//    self.interruptionsHandler.schoolZoneActive = @"VIOLATION";
+    isMapInterruption = NO;
 	
 }
 
@@ -330,8 +334,17 @@ static const int kDefaultImageViewTag = 12567;
     self.is_AppBackground = @"TRUE";
     NSLog(@"is_AppBackground changed to: %@",is_AppBackground);
     if (isTripStarted) {
-    [self.interruptionsHandler applicationWillResignActive];
+        if (isMapInterruption) {
+            [self.interruptionsHandler wirteMapInterruption];
+            
+        } else {
+           [self.interruptionsHandler applicationWillResignActive];
+        }
+        
+    
     }
+    isMapInterruption = false;
+    
     }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

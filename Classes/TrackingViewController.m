@@ -870,6 +870,9 @@ static const float kSchoolCheckRadius = 0.3;
 -(IBAction) btnMapButtonTapped:(id)sender {
     NSLog(@"Mapp button tapped");
     
+    
+    
+    
     UIApplication *ourApplication = [UIApplication sharedApplication];
     
     NSString *ourPath = @"comgooglemaps://";
@@ -878,15 +881,25 @@ static const float kSchoolCheckRadius = 0.3;
     
     if ([ourApplication canOpenURL:ourURL]) {
         
+//        InterruptionsHandler *interruptionsHandler = [[InterruptionsHandler alloc] init];
+//        [interruptionsHandler mapIntrruption];
+//        
+//        /* Generate MAP Interruption */
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+        appDelegate.interruptionsHandler.schoolZoneActive = @"MAP";
+        appDelegate.isMapInterruption = true;
+//        [[[[iToast makeText:[NSString stringWithFormat:@"MAP Interruption."]]setGravity:iToastGravityCenter] setDuration:iToastDurationTooLong] show];
+        
         [ourApplication openURL:ourURL];
         
+       
     }
     
     else {
         
         //Display error
         NSLog(@"Problem to display maps");
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Receiver Not Found" message:@"The Receiver App is not installed. It must be installed to send text." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Google Maps Not Found" message:@"Google maps is not installed. Please install it to use this feature. ." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         
         [alertView show];
         

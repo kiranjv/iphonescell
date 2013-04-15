@@ -192,8 +192,10 @@ static const NSInteger kDescriptionLabelTag = 0;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"hh:mm a"];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+   // [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    NSLog(@"INTERRUPTION BEFORE FORMAT: %@",interruption.timestamp);
 	NSString * interruptionTime = [dateFormatter stringFromDate:interruption.timestamp];
+     NSLog(@"INTERRUPTION AFTER FORMAT: %@",interruptionTime);
 	[dateFormatter release];
 	NSString *message = [NSString stringWithFormat:@"SAFECELL INTERRUPTION AT %@", interruptionTime];
     
